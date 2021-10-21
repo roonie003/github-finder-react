@@ -9,7 +9,7 @@ class User extends Component {
     }
 
     staticpropTypes = {
-        loadong: PropTypes.bool,
+        loading: PropTypes.bool,
         user: PropTypes.object.isRequired,
         getUser: PropTypes.func.isRequired,
     }
@@ -32,7 +32,7 @@ class User extends Component {
 
         const { loading } = this.props;
 
-        //if (loading) return <Spinner />;
+        if (loading) return <Spinner />;
 
         return (
             <Fragment>
