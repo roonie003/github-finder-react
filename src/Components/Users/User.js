@@ -27,12 +27,12 @@ class User extends Component {
             following,
             public_repos,
             public_gists,
-            hirerable
+            hireable,
         } = this.props.user;
 
         const { loading } = this.props;
 
-        if (loading) return <Spinner />;
+        //if (loading) return <Spinner />;
 
         return (
             <Fragment>
