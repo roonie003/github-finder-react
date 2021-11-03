@@ -1,24 +1,17 @@
-import React, { Fragment, Component } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import Spinner from '../layout/Spinner';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Repos  from '../repos/Repos';
 
-class User extends Component {
-    componentDidMount() {
-        this.props.getUser(this.props.match.params.login);
-        this.props.getUserRepos(this.props.match.params.login);
-    }
-
-    staticpropTypes = {
-        loading: PropTypes.bool,
-        user: PropTypes.object.isRequired,
-        repos: PropTypes.array.isRequired,
-        getUser: PropTypes.func.isRequired,
-        getUserRepos:PropTypes.func.isRequired
-    }
-
-    render() {
+const User = ({ user, loading, getUser, repos, getUserRepos, match }) => {
+   useEffect (() => {
+    getUser(match.params.login);
+    getUserRepos(match.params.login);
+    // eslint-disable-next-line
+   }, []);
+   
+    
         const{
             name,
             avatar_url,
@@ -33,9 +26,8 @@ class User extends Component {
             public_repos,
             public_gists,
             hireable,
-        } = this.props.user;
+        } = user;
 
-        const { loading, repos } = this.props;
 
         if (loading) return <Spinner />;
 
@@ -56,7 +48,8 @@ class User extends Component {
                             src={avatar_url} 
                             className='round-img'  
                             alt=''  
-                            style ={{width: '150px'}}/>
+                            style ={{width: '150px'}}
+                        />
                         <h1>{name}</h1>
                         <p>Location: {location}</p>
                     </div>
@@ -103,6 +96,14 @@ class User extends Component {
         );
         
     }
+
+
+User.propTypes = {
+    loading: PropTypes.bool,
+    user: PropTypes.object.isRequired,
+    repos: PropTypes.array.isRequired,
+    getUser: PropTypes.func.isRequired,
+    getUserRepos:PropTypes.func.isRequired
 }
 
 export default User
