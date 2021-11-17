@@ -1,6 +1,6 @@
 import React , { useReducer } from "react";
 import axios from 'axios';
-import GihubContext from './githubContext';
+import GithubContext from "./githubContext";
 import GithubReducer from './githubReducer';
 import {
     SEARCH_USERS,
@@ -9,7 +9,19 @@ import {
     GET_USER,
     CLEAR_USERS
 } from '../types';
-import GithubContext from "./githubContext";
+
+let githubClientId;
+let githubClientSecret;
+
+if (process.env.NODE_ENV !== 'production'){
+    githubClientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
+    githubClientSecret = process.env.REACT_APP_GITHUB_CLIENT_SECRET;
+} else {
+    githubClientId = process.env.GITHUB_CLIENT_ID;
+    githubClientSecret = process.env.GITHUB_CLIENT_SECRET;
+
+}
+
 
 const GihubState = props => {
     const initialState = {
@@ -20,6 +32,8 @@ const GihubState = props => {
 
     }
 
+
+
     const [state, dispatch] = useReducer(GithubReducer, initialState);
 
 //search user
@@ -28,8 +42,8 @@ const searchUsers = async text => {
     setLoading();
 
     const res = await axios.get(
-      `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}
-      &client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+      `https://api.github.com/search/users?q=${text}&client_id=${githubClientId}
+      &client_secret=${githubClientSecret}`)
 
       
     
@@ -47,8 +61,8 @@ const searchUsers = async text => {
 
 
     const res = await axios.get(
-     `https://api.github.com/search/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}
-     &client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+     `https://api.github.com/search/users/${username}?client_id=${githubClientId}
+     &client_secret=${githubClientSecret}`)
 
      dispatch ({ 
         type: GET_USER,
@@ -63,8 +77,8 @@ const getUserRepos = async (username) => {
     setLoading();
 
   const res = await axios.get(
-  `https://api.github.com/search/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}
-  &client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+  `https://api.github.com/search/users/${username}/repos?per_page=5&sort=created:asc&client_id=${githubClientId}
+  &client_secret=${githubClientSecret}`)
 
   
      dispatch ({ 
